@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "start": "node index.js",
-        "image-hosting": "node imagehosting.js"
+        "image-hosting": "node freehost.js"
     },
     "dependencies": {
         "express": "^4.17.1",
