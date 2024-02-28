@@ -1,109 +1,45 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FreeHost</title>
-<style>
-    body {
-        background-color: #121212;
-        color: #ffffff;
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
-    header {
-        background-color: #333333;
-        padding: 10px 0;
-        text-align: center;
-    }
-    .container {
-        width: 80%;
-        margin: 20px auto;
-    }
-    h1 {
-        text-align: center;
-    }
-    .gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        grid-gap: 20px;
-    }
-    .image {
-        position: relative;
-        border-radius: 5px;
-        overflow: hidden;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-    .image img {
-        width: 100%;
-        height: auto;
-    }
-    .image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-    .image-overlay:hover {
-        opacity: 1;
-    }
-    .image-overlay a {
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 14px;
-        padding: 5px 10px;
-        background-color: #333333;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Hosting</title>
 </head>
 <body>
-    <header>
-        <h1>FreeHost Image Hoster</h1>
-    </header>
-    <div class="container">
-        <input type="file" id="fileInput" accept="image/*">
-        <label for="fileInput">Upload Image</label>
-        <div class="gallery" id="imageGallery"></div>
-    </div>
+    <h1>Image Hosting</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="file">
+        <button type="submit">Upload Image</button>
+    </form>
+    <div id="imageUrl"></div>
 
     <script>
-        document.getElementById('fileInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+        const form = document.getElementById('uploadForm');
+        const imageUrlDiv = document.getElementById('imageUrl');
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const imageUrl = event.target.result;
-                const imageContainer = document.createElement('div');
-                imageContainer.classList.add('image');
-                imageContainer.innerHTML = `
-                    <img src="${imageUrl}" alt="Uploaded Image">
-                    <div class="image-overlay">
-                        <a href="#" onclick="copyImageLink('${imageUrl}')">Copy Link</a>
-                    </div>
-                `;
-                document.getElementById('imageGallery').appendChild(imageContainer);
-            };
-            reader.readAsDataURL(file);
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('http://localhost:3000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    const imageUrl = `http://localhost:3000/images/${data.imageName}`;
+                    imageUrlDiv.innerHTML = `Image URL: <a href="${imageUrl}" target="_blank">${imageUrl}</a>`;
+                } else {
+                    imageUrlDiv.innerHTML = `Error: ${data.message}`;
+                }
+            } catch (error) {
+                imageUrlDiv.innerHTML = `Error: ${error.message}`;
+            }
         });
-
-        function copyImageLink(imageUrl) {
-            navigator.clipboard.writeText(imageUrl).then(function() {
-                alert('Image link copied to clipboard!');
-            }, function() {
-                alert('Failed to copy image link!');
-            });
-        }
     </script>
 </body>
 </html>
