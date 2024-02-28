@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Image Hoster</title>
+<title>FreeHost</title>
 <style>
     body {
         background-color: #121212;
@@ -16,13 +16,18 @@
         background-color: #333333;
         padding: 10px 0;
         text-align: center;
+        margin-bottom: 20px;
     }
     .container {
         width: 80%;
-        margin: 20px auto;
+        margin: 0 auto;
+        padding: 0 10px;
+        text-align: center;
     }
     h1 {
         text-align: center;
+        margin: 0;
+        padding: 10px 0;
     }
     .gallery {
         display: grid;
@@ -34,6 +39,8 @@
         border-radius: 5px;
         overflow: hidden;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        margin: 0 auto;
+        max-width: 80%;
     }
     .image img {
         width: 100%;
@@ -64,15 +71,24 @@
         border-radius: 5px;
         cursor: pointer;
     }
+    input[type="file"] {
+        display: block;
+        margin: 20px auto;
+        padding: 10px;
+        border: 2px solid #333333;
+        border-radius: 5px;
+        background-color: #121212;
+        color: #ffffff;
+        cursor: pointer;
+    }
 </style>
 </head>
 <body>
     <header>
-        <h1>Dark Image Hoster</h1>
+        <h1>FreeHost</h1>
     </header>
     <div class="container">
         <input type="file" id="fileInput" accept="image/*">
-        <label for="fileInput">Upload Image</label>
         <div class="gallery" id="imageGallery"></div>
     </div>
 
@@ -99,9 +115,9 @@
 
         function copyImageLink(imageUrl) {
             navigator.clipboard.writeText(imageUrl).then(function() {
-                alert('Image link copied to clipboard!');
+                alert('Image link copied to clipboard');
             }, function() {
-                alert('Failed to copy image link!');
+                alert('Failed to copy image link');
             });
         }
     </script>
