@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Image Hoster</title>
+<style>
+    body {
+        background-color: #121212;
+        color: #ffffff;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background-color: #333333;
+        padding: 10px 0;
+        text-align: center;
+    }
+    .container {
+        width: 80%;
+        margin: 20px auto;
+    }
+    h1 {
+        text-align: center;
+    }
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 20px;
+    }
+    .image {
+        border-radius: 5px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .image img {
+        width: 100%;
+        height: auto;
+    }
+    input[type="file"] {
+        display: none;
+    }
+    label {
+        display: block;
+        width: 100%;
+        background-color: #666666;
+        color: #ffffff;
+        padding: 10px 0;
+        text-align: center;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+    <header>
+        <h1>Dark Image Hoster</h1>
+    </header>
+    <div class="container">
+        <input type="file" id="fileInput" accept="image/*">
+        <label for="fileInput">Upload Image</label>
+        <div class="gallery" id="imageGallery"></div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imageUrl = event.target.result;
+                const imageContainer = document.createElement('div');
+                imageContainer.classList.add('image');
+                imageContainer.innerHTML = `<img src="${imageUrl}" alt="Uploaded Image">`;
+                document.getElementById('imageGallery').appendChild(imageContainer);
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>
