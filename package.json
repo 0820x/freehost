@@ -1,0 +1,14 @@
+{
+    "name": "freehost",
+    "version": "1.0.0",
+    "description": "free image hosting",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js",
+        "image-hosting": "node imagehosting.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1",
+        "multer": "^1.4.3"
+    }
+}
