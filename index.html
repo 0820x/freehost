@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Image Hoster</title>
+<title>FreeHost</title>
 <style>
     body {
         background-color: #121212;
@@ -30,6 +30,7 @@
         grid-gap: 20px;
     }
     .image {
+        position: relative;
         border-radius: 5px;
         overflow: hidden;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -38,16 +39,28 @@
         width: 100%;
         height: auto;
     }
-    input[type="file"] {
-        display: none;
-    }
-    label {
-        display: block;
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        background-color: #666666;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .image-overlay:hover {
+        opacity: 1;
+    }
+    .image-overlay a {
         color: #ffffff;
-        padding: 10px 0;
-        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+        padding: 5px 10px;
+        background-color: #333333;
         border-radius: 5px;
         cursor: pointer;
     }
@@ -55,7 +68,7 @@
 </head>
 <body>
     <header>
-        <h1>Dark Image Hoster</h1>
+        <h1>FreeHost Image Hoster</h1>
     </header>
     <div class="container">
         <input type="file" id="fileInput" accept="image/*">
@@ -73,11 +86,24 @@
                 const imageUrl = event.target.result;
                 const imageContainer = document.createElement('div');
                 imageContainer.classList.add('image');
-                imageContainer.innerHTML = `<img src="${imageUrl}" alt="Uploaded Image">`;
+                imageContainer.innerHTML = `
+                    <img src="${imageUrl}" alt="Uploaded Image">
+                    <div class="image-overlay">
+                        <a href="#" onclick="copyImageLink('${imageUrl}')">Copy Link</a>
+                    </div>
+                `;
                 document.getElementById('imageGallery').appendChild(imageContainer);
             };
             reader.readAsDataURL(file);
         });
+
+        function copyImageLink(imageUrl) {
+            navigator.clipboard.writeText(imageUrl).then(function() {
+                alert('Image link copied to clipboard!');
+            }, function() {
+                alert('Failed to copy image link!');
+            });
+        }
     </script>
 </body>
 </html>
